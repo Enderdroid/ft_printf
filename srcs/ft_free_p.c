@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_free_p.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkleiner <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/27 14:59:54 by tkleiner          #+#    #+#             */
+/*   Updated: 2020/07/27 15:09:03 by tkleiner         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "srcs/libftprintf.h"
 
-static int	ft_getLen(char *arg, char *pattern)
+static int	ft_getwholelen(char *arg, char *pattern)
 {
-	int len;
-	int i;
+	int		len;
+	int		i;
 
 	i = 0;
 	len = ft_strlen(arg);
@@ -19,7 +31,7 @@ static int	ft_getLen(char *arg, char *pattern)
 int			ft_free_p(void *arg, void *pattern, void *o_str, int key)
 {
 	if (key == 2)
-		key = ft_getLen(arg, pattern);
+		key = ft_getwholelen(arg, pattern);
 	if (arg)
 		free(arg);
 	if (pattern)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printstr.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkleiner <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/27 15:00:25 by tkleiner          #+#    #+#             */
+/*   Updated: 2020/07/27 15:00:26 by tkleiner         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "srcs/libftprintf.h"
 
 static	void	ft_put_minus(int *is_minus)
@@ -26,7 +38,7 @@ static	char	*ft_put_s(char *pattern, char *arg, int *is_minus, int is_z)
 static char		*ft_put_n(char *pattern, int *is_minus, char *printable)
 {
 	while (*pattern >= '0' && *pattern <= '9')
-			++pattern;
+		++pattern;
 	if (*pattern == 'z')
 	{
 		ft_put_minus(is_minus);
@@ -46,6 +58,11 @@ void			ft_printstr(char *pattern, char *arg, int is_z)
 	is_minus = 0;
 	if ((*arg == '-' || *arg == ' ' || *arg == '+') && !is_z)
 		is_minus = *(arg++);
+	if (!(*pattern) && is_minus)
+	{
+		*pattern = 's';
+		*arg = 0;
+	}
 	while (*pattern)
 	{
 		pattern = ft_put_s(pattern, arg, &is_minus, is_z);
@@ -53,12 +70,8 @@ void			ft_printstr(char *pattern, char *arg, int is_z)
 		if ((len = ft_atoi(pattern)))
 		{
 			pattern = ft_put_n(pattern, &is_minus, &printable);
-			//printf("%i\n", len);
-			//printf("\n\np: %s\n\n", pattern);
 			while (len--)
-			{
 				ft_putchar_fd(printable, 1);
-			}
 		}
 	}
 }

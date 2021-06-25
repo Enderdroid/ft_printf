@@ -16,51 +16,46 @@ LIBFT_DIR = ./libft
 SRC_DIR = ./srcs
 OBJ_DIR = ./obj
 HEADERS = $(SRC_DIR)/libftprintf.h $(LIBFT_DIR)/libft.h
-
+LFT = libft.a
 
 MAIN_SRCS	:=	ft_printf.c		ft_parse.c		ft_pattern.c \
 				ft_printf.c		ft_print.c		ft_printstr.c \
 				ft_print_c.c	ft_print_hex.c	ft_print_i.c	ft_print_u.c	ft_print_s.c \
 				ft_s_reset.c	ft_validate.c	ft_free_p.c		ft_putchar.c
 MAIN_OBJS	= $(MAIN_SRCS:.c=.o)
-LIBFT_SRCS	:=	ft_strchr.c		ft_rmchar.c		ft_atoi.c		ft_isdigit.c \
-				ft_strjoin.c	ft_strlcat.c	ft_calloc.c	\
-				ft_strlen.c		ft_itoa.c		ft_putchar_fd.c	\
-				ft_putstr_fd.c	ft_memset.c		ft_bzero.c		ft_substr.c		ft_strlcpy.c	ft_strdup.c ft_memcpy.c	ft_abs.c
-LIBFT_OBJS	= $(LIBFT_SRCS:.c=.o)
-BONUS_SRC	:=	ft_lstsize.c	ft_lstnew.c		ft_lstlast.c \
-				ft_lstadd_front.c \
-				ft_lstadd_back.c \
-				ft_lstdelone.c	ft_lstclear.c \
-				ft_lstiter.c	ft_lstmap.c
-BONUS_OBJ = $(BONUS_SRC:.c=.o)
 
-ifdef MAKE_BONUS
-SRC = $(BONUS_SRC) $(MAIN_SRCS) $(addprefix $(LIBFT_DIR)/, $(LIBFT_SRCS))
-OBJ = $(BONUS_OBJ) $(MAIN_OBJS) $(addprefix $(LIBFT_DIR)/, $(LIBFT_OBJS))
-else
-SRC := $(addprefix $(SRC_DIR)/, $(MAIN_SRCS)) $(addprefix $(LIBFT_DIR)/, $(LIBFT_SRCS))
-OBJ := $(addprefix $(OBJ_DIR)/, $(MAIN_OBJS)) $(addprefix $(OBJ_DIR)/, $(LIBFT_OBJS))
-endif
+LFT_OBJ		:=	ft_strchr.o		ft_rmchar.o		ft_atoi.o		ft_isdigit.o \
+				ft_strjoin.o	ft_strlcat.o	ft_calloc.o	\
+				ft_strlen.o		ft_itoa.o		ft_putchar_fd.o	\
+				ft_putstr_fd.o	ft_memset.o		ft_bzero.o	\
+				ft_substr.o		ft_strlcpy.o	ft_strdup.o	\
+				ft_memcpy.o		ft_abs.o
+
+SRC			:= $(addprefix $(SRC_DIR)/, $(MAIN_SRCS))
+M_OBJ		:= $(addprefix $(OBJ_DIR)/, $(MAIN_OBJS)) 
+L_OBJ		:= $(addprefix $(LIBFT_DIR)/, $(LFT_OBJ)) 
 
 .PHONY: all clean fclean re
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	@ar rc $@ $?
+$(OBJ_DIR):
+	@mkdir $(OBJ_DIR)
+
+$(NAME): $(M_OBJ)
+	@make -f $(LIBFT_DIR)/Makefile
+	@ar rc $@ $? $(L_OBJ)
 	@ranlib $@
 
 $(OBJ_DIR)/%.o: ./*/%.c $(HEADERS) | $(OBJ_DIR)
 	@gcc $(FLAGS) -I. -c $< -o $@
 
-bonus:
-	@$(MAKE) MAKE_BONUS=1 all
-
 clean:
+	@make clean -f $(LIBFT_DIR)/Makefile
 	@rm -rf ./obj/*.o
 
 fclean: clean
+	@make fclean -f $(LIBFT_DIR)/Makefile
 	@rm -rf $(NAME)
 
 re: fclean all

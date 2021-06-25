@@ -1,13 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_print_hex.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkleiner <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/27 15:00:06 by tkleiner          #+#    #+#             */
+/*   Updated: 2020/07/27 15:07:29 by tkleiner         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "srcs/libftprintf.h"
 
-static	void	ft_itoa_hex(char **arg, t_sarg *pref, LONG_T num, char start)//FREED
+static void		ft_itoa_hex(char **arg, t_sarg *pref, LONG_T num, char start)
 {
 	LONG_T		buf;
 	size_t		len;
 	char		*str;
 
 	len = 0;
-	if (!(str = ft_calloc(P_SIZE, sizeof(char))) || !(*arg = str))
+	str = ft_calloc(P_SIZE, sizeof(char));
+	if (!str || !(*arg = str))
 		return ;
 	if (pref->type == 'p')
 		str += 2;
@@ -15,7 +28,7 @@ static	void	ft_itoa_hex(char **arg, t_sarg *pref, LONG_T num, char start)//FREED
 		*str = '0';
 	while (++len && buf)
 		buf /= 16;
-	while(--len)
+	while (--len)
 	{
 		buf = num % 16;
 		if (buf > 9)
@@ -26,7 +39,7 @@ static	void	ft_itoa_hex(char **arg, t_sarg *pref, LONG_T num, char start)//FREED
 	}
 }
 
-int				ft_print_hex(t_sarg *pref, LONG_T num)//FREED
+int				ft_print_hex(t_sarg *pref, LONG_T num)
 {
 	char		*arg;
 	char		*pattern;
@@ -34,8 +47,8 @@ int				ft_print_hex(t_sarg *pref, LONG_T num)//FREED
 
 	len = 0;
 	arg = NULL;
-	if (!pref->perc && pref->type == 'p')
-		num = (pref->perc)++;
+	if (pref->type == 'p' && !(pref->perc)++)
+		num = 0;
 	if (pref->type == 'X' || pref->type == 'x')
 		ft_itoa_hex(&arg, pref, num, pref->type - 23);
 	else if (pref->type == 'p')
@@ -44,7 +57,9 @@ int				ft_print_hex(t_sarg *pref, LONG_T num)//FREED
 		ft_memcpy(arg, "0x", 2);
 	}
 	if (!arg)
-		return(-1);
+		return (-1);
+	if (!pref->perc && !num && pref->type != 'p')
+		arg[0] = '\0';
 	len = ft_strlen(arg);
 	if (!(pattern = ft_pattern(pref, len, len, 1)))
 		return (ft_free_p(arg, NULL, NULL, -1));

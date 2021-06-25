@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_print.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkleiner <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/27 15:00:13 by tkleiner          #+#    #+#             */
+/*   Updated: 2020/07/27 15:05:24 by tkleiner         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "srcs/libftprintf.h"
 
-static LONG_T ft_umod(t_sarg *pref, LONG_T val)
+static LONG_T			ft_umod(t_sarg *pref, LONG_T val)
 {
 	if (!pref->mode)
 		val = (size_t)val;
@@ -13,10 +25,11 @@ static LONG_T ft_umod(t_sarg *pref, LONG_T val)
 	return (val);
 }
 
-static long long int ft_imod(t_sarg *pref, va_list *factor)
+static long long int	ft_imod(t_sarg *pref, va_list *factor)
 {
-	long long int	val;
+	long long int		val;
 
+	val = 0;
 	if (!pref->mode)
 		val = (long long int)va_arg(*factor, int);
 	else if (pref->mode == 4)
@@ -30,21 +43,25 @@ static long long int ft_imod(t_sarg *pref, va_list *factor)
 	return (val);
 }
 
-int ft_print(t_sarg *pref, va_list *factor, int *ret)//NO PTR
+int						ft_print(t_sarg *pref, va_list *factor, int *ret)
 {
-	int buf;
+	int					buf;
 
 	buf = *ret;
 	if (pref->type == 'i' || pref->type == 'd')
 		*ret += ft_print_i(pref, ft_imod(pref, factor));
+	else if (pref->type == '%')
+		*ret += ft_print_c(pref, '%');
 	else if (pref->type == 'c')
 		*ret += ft_print_c(pref, (char)va_arg(*factor, int));
 	else if (pref->type == 'u')
-		*ret += ft_print_u(pref, ft_umod(pref, va_arg(*factor, LONG_T)));
+		*ret += ft_print_u(pref,
+			(LONG_T)ft_umod(pref, va_arg(*factor, unsigned int)));
 	else if (pref->type == 's')
 		*ret += ft_print_s(pref, va_arg(*factor, char*));
 	else if (pref->type == 'x' || pref->type == 'X')
-		*ret += ft_print_hex(pref, ft_umod(pref, va_arg(*factor, LONG_T)));
+		*ret += ft_print_hex(pref,
+			(LONG_T)ft_umod(pref, va_arg(*factor, unsigned int)));
 	else if (pref->type == 'p')
 		*ret += ft_print_hex(pref, va_arg(*factor, LONG_T));
 	else

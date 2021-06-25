@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pattern.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkleiner <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/27 15:00:01 by tkleiner          #+#    #+#             */
+/*   Updated: 2020/07/27 15:08:14 by tkleiner         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "srcs/libftprintf.h"
 
-static	int		ft_getwidth(t_sarg *pref, int a_size, int p_z_c, int *w_z_c)//NO PTR
+static int		ft_getwidth(t_sarg *pref, int a_size, int p_z_c, int *w_z_c)
 {
 	int			pa_size;
 	int			s_res;
@@ -24,7 +36,7 @@ static	int		ft_getwidth(t_sarg *pref, int a_size, int p_z_c, int *w_z_c)//NO PTR
 	return (0);
 }
 
-static	int		ft_getperc(t_sarg *pref, int a_size, int n_size)//NO PTR
+static int		ft_getperc(t_sarg *pref, int a_size, int n_size)
 {
 	int			p_z_c;
 
@@ -38,7 +50,7 @@ static	int		ft_getperc(t_sarg *pref, int a_size, int n_size)//NO PTR
 	return (p_z_c);
 }
 
-static	void	ft_sub_fp(char *str, int val, char c)//FRIED
+static void		ft_sub_fp(char *str, int val, char c)
 {
 	char		*num;
 	char		*sym;
@@ -62,7 +74,7 @@ static	void	ft_sub_fp(char *str, int val, char c)//FRIED
 	sym = NULL;
 }
 
-static	void	ft_fillpattern(char *str, int w_s_c, int p_z_c, int w_z_c)//NO PTR
+static void		ft_fillpattern(char *str, int w_s_c, int p_z_c, int w_z_c)
 {
 	int			is_zero;
 
@@ -87,10 +99,9 @@ static	void	ft_fillpattern(char *str, int w_s_c, int p_z_c, int w_z_c)//NO PTR
 		ft_sub_fp(str, -p_z_c, 'z');
 	if (w_s_c < 0)
 		ft_sub_fp(str, -w_s_c, ' ');
-
 }
 
-char			*ft_pattern(t_sarg *pref, int a_size, int n_size, int is_perc)//ADDED
+char			*ft_pattern(t_sarg *pref, int a_size, int n_size, int is_perc)
 {
 	int			p_z_c;
 	int			w_z_c;
@@ -101,18 +112,17 @@ char			*ft_pattern(t_sarg *pref, int a_size, int n_size, int is_perc)//ADDED
 	p_z_c = 0;
 	if (!(str = ft_calloc(P_SIZE, sizeof(char))))
 		return (NULL);
-	if (pref->perc > 0)
+	if (pref->perc > 0 && is_perc)
 		p_z_c = ft_getperc(pref, a_size, n_size);
 	if (p_z_c < 0 && is_perc != -1)
 		p_z_c = 0;
 	w_s_c = ft_getwidth(pref, a_size, p_z_c, &w_z_c);
-	if (is_perc && pref->perc != -1)
+	if (is_perc && pref->perc >= 0)
 		w_z_c = 0;
 	else if (w_z_c && w_s_c > 0)
 		w_s_c = 0;
-	if (!pref->perc)
+	if (a_size == 0 && pref->width == 0)
 		*str = '0';
-	//printf("%s - %i=%i - %i - %i\n", str, w_s_c, (int)pref->width, a_size, w_z_c);
 	ft_fillpattern(str, w_s_c, p_z_c, w_z_c);
 	if (ft_strchr(str, 'f'))
 		return (NULL);

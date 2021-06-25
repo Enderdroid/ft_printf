@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_parse.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkleiner <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/27 14:59:58 by tkleiner          #+#    #+#             */
+/*   Updated: 2020/07/27 15:08:45 by tkleiner         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "srcs/libftprintf.h"
 
-static	int	ft_fparse(const char *src, char *flags)//NO PTR
+static int		ft_fparse(const char *src, char *flags)
 {
-	int		i;
-	int		dif;
-	char	*c;
-	const	char	g_flags[] = " #%+-0";
+	int			i;
+	int			dif;
+	char		*c;
+	const char	mods[] = " #%+-0";
 
 	i = 0;
 	dif = 0;
-	while ((c = ft_strchr(g_flags, src[dif++])))
+	while ((c = ft_strchr(mods, src[dif++])))
 		if (!(ft_strchr(flags, *c)))
 			flags[i++] = *c;
 	if ((c = ft_strchr(flags, ' ')) && ft_strchr(flags, '+'))
@@ -19,9 +31,9 @@ static	int	ft_fparse(const char *src, char *flags)//NO PTR
 	return (--dif);
 }
 
-static	int	ft_wparse(char *start, long long *width)//NO PTR
+static int		ft_wparse(char *start, long long *width)
 {
-	int		dif;
+	int			dif;
 
 	dif = 0;
 	if (*start == '*')
@@ -43,9 +55,9 @@ static	int	ft_wparse(char *start, long long *width)//NO PTR
 	return (dif);
 }
 
-static	int	ft_pparse(char *start, long long *perc)//NO PTR
+static int		ft_pparse(char *start, long long *perc)
 {
-	int		dif;
+	int			dif;
 
 	dif = 0;
 	if (*start == '*')
@@ -62,9 +74,9 @@ static	int	ft_pparse(char *start, long long *perc)//NO PTR
 	return (dif);
 }
 
-static	int	ft_mparse(char *start, char *mode)//NO PTR
+static int		ft_mparse(char *start, char *mode)
 {
-	int		dif;
+	int			dif;
 
 	dif = 0;
 	if (*start == 'l')
@@ -82,9 +94,9 @@ static	int	ft_mparse(char *start, char *mode)//NO PTR
 	return (dif);
 }
 
-int			ft_parse(const char *src, va_list *factor, t_sarg *pref)//NO PTR
+int				ft_parse(const char *src, va_list *factor, t_sarg *pref)
 {
-	int		dif;
+	int			dif;
 
 	dif = 0;
 	dif = ft_fparse(src, pref->flags);

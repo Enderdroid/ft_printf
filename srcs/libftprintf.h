@@ -1,14 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkleiner <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/27 15:00:40 by tkleiner          #+#    #+#             */
+/*   Updated: 2020/07/27 15:01:10 by tkleiner         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LIBFTPRINTF_H
 # define LIBFTPRINTF_H
 
 # include <stdarg.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h>
 # include "../libft/libft.h"
 
 # define P_SIZE 50
-# define LONG_T unsigned long long int
+# define LONG_T size_t
 
 typedef struct	s_sarg
 {
@@ -18,7 +29,6 @@ typedef struct	s_sarg
 	char		mode;
 	char		type;
 }				t_sarg;
-
 int				ft_parse(const char *src, va_list *factor, t_sarg *pref);
 int				ft_print(t_sarg *pref, va_list *factor, int *ret);
 int				ft_print_i(t_sarg *pref, long long num);
@@ -34,5 +44,4 @@ char			*ft_pattern(t_sarg *pref, int a_size,\
 int				ft_printf(const char *s, ...);
 int				ft_validate(t_sarg *pref);
 t_sarg			*ft_reset(t_sarg *pref);
-
 #endif

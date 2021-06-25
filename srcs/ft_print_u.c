@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_print_u.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkleiner <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/07/27 15:00:11 by tkleiner          #+#    #+#             */
+/*   Updated: 2020/07/27 15:06:26 by tkleiner         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "srcs/libftprintf.h"
 
-static size_t	ft_gl(LONG_T num)
+static size_t		ft_gl(LONG_T num)
 {
-	size_t		len;
+	size_t			len;
 
 	len = 0;
 	if (num == 0)
@@ -15,7 +27,7 @@ static size_t	ft_gl(LONG_T num)
 	return (len);
 }
 
-char			*ft_utoa(LONG_T n)
+char				*ft_utoa(LONG_T n)
 {
 	char			*str;
 	LONG_T			num;
@@ -37,17 +49,19 @@ char			*ft_utoa(LONG_T n)
 	return (str);
 }
 
-int			ft_print_u(t_sarg *pref, LONG_T num)//FREED
+int					ft_print_u(t_sarg *pref, LONG_T num)
 {
-	char	*arg;
-	char	*s_num;
-	char	minus;
-	size_t	len;
-	char	*pattern;
+	char			*arg;
+	char			*s_num;
+	char			minus;
+	size_t			len;
+	char			*pattern;
 
 	arg = NULL;
 	minus = 1;
 	s_num = ft_utoa(num);
+	if (pref->perc == 0 && num == 0)
+		s_num[0] = '\0';
 	if (ft_strchr(pref->flags, ' '))
 		arg = ft_strjoin(" ", s_num);
 	else if (ft_strchr(pref->flags, '+'))
@@ -57,7 +71,7 @@ int			ft_print_u(t_sarg *pref, LONG_T num)//FREED
 	if (!arg && !(arg = ft_strdup(s_num)))
 		return (-1);
 	len = ft_strlen(arg);
-	if(!(pattern = ft_pattern(pref, len, len - minus, 1)))
+	if (!(pattern = ft_pattern(pref, len, len - minus, 1)))
 		return (ft_free_p(arg, NULL, s_num, -1));
 	ft_printstr(pattern, arg, 0);
 	return (ft_free_p(arg, pattern, s_num, 2));

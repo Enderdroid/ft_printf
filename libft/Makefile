@@ -11,6 +11,9 @@
 # **************************************************************************** #
 
 NAME = libft.a
+SRC_DIR = ./libft
+OBJ_DIR = ./libft
+
 MAIN_SRCS =	ft_memset.c		ft_memchr.c		ft_memcpy.c		ft_memcmp.c		ft_memmove.c	ft_memccpy.c \
 			ft_bzero.c		ft_calloc.c \
 			ft_isalnum.c	ft_isalpha.c	ft_isascii.c	ft_isdigit.c	ft_isprint.c \
@@ -38,6 +41,9 @@ SRC = $(MAIN_SRCS)
 OBJ = $(MAIN_OBJS)
 endif
 
+SRC := $(addprefix $(SRC_DIR)/, $(MAIN_SRCS))
+OBJ := $(addprefix $(OBJ_DIR)/, $(MAIN_OBJS))
+
 .PHONY: all clean fclean re
 
 all: $(NAME)
@@ -53,7 +59,7 @@ bonus:
 	@$(MAKE) MAKE_BONUS=1 all
 
 clean:
-	@rm -rf *.o
+	@rm -rf $(OBJ_DIR)/*.o
 
 fclean: clean
 	@rm -rf $(NAME)
